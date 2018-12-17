@@ -1,6 +1,6 @@
 import sys
 
-str = "";
+str = ""
 
 if str == "end":
     sys.exit();
