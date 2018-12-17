@@ -1,6 +1,6 @@
 import sys
 
-str = ""
+while True:
 
-if str == "end":
-    sys.exit();
+    if str == "end":
+        sys.exit()
