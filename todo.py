@@ -6,7 +6,7 @@ import pprint
 path = '/home/sarashin/Documents/py/todo/todo.json'
 try:
     with open(path, mode='x') as init:
-        pass
+        init.write('{}')
 except FileExistsError:
     pass
 
