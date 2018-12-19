@@ -2,9 +2,11 @@ import sys
 import json
 from collections import OrderedDict
 import pprint
+import os
 
-path = '/home/sarashin/Documents/py/todo/todo.json'
-archive_path = '/home/sarashin/Documents/py/todo/todo_archive.json'
+path = os.path.dirname(os.path.abspath(__file__))+'/todo.json'
+archive_path = os.path.dirname(os.path.abspath(__file__))+'/todo_archive.json'
+
 try:
     with open(path, mode='x') as init:
         init.write('{}')
@@ -57,7 +59,7 @@ def see(args):
     row = ['BY', 'ON', 'WILL', 'UNWILL']
     print('\n')
     print('\n')
-    print('        num', end=' : \t')
+    print('         ID', end=' : \t')
     print('TODO'.ljust(30), end='\t')
     for r in row:
         print(r.ljust(18), end='\t')
@@ -85,7 +87,7 @@ def see(args):
 
 def erase(args):
     if len(args) <= 1:
-        alart = 'eraseするリストの番号を入力してください'
+        alart = 'eraseする項目のIDを入力してください'
         return alart
     #TODOファイルを開く
     todo_file = open(path, 'r')
@@ -120,6 +122,29 @@ def erase(args):
     todo_out = open(path, 'w')
     json.dump(new_todo_map, todo_out, ensure_ascii=False)
     todo_out.close()
+    see('')
+    complete = 'complete!!'
+    return complete
+
+def edit(args):
+    if len(args) <= 2:
+        alart = 'editしたい項目のIDを入力してください'
+        return alart
+    todo_file = open(path, 'r')
+    todo_map = json.load(todo_file, object_pairs_hook=OrderedDict)
+    todo_file.close()
+
+    row = ['todo', 'by', 'on', 'will', 'unwill']
+    index = args[1]
+    for i in range(2, len(args)):
+        for j in row:
+            if args[i] == j:
+                todo_map[index][j] = args[i+1]
+                break
+
+    todo_out = open(path, 'w')
+    json.dump(todo_map, todo_out, ensure_ascii=False)
+    todo_out.close()
     complete = 'complete!!'
     return complete
 
@@ -136,6 +161,10 @@ while True:
         see(command)
     elif command[0] == 'erase':
         message = erase(command)
+        print('')
+        print(message+'\n')
+    elif command[0] == 'edit':
+        message = edit(command)
         print('')
         print(message+'\n')
     elif command[0] == "exit":
