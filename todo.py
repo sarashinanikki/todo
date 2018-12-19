@@ -40,24 +40,40 @@ def see(parameter_list):
     jfile = open(path, 'r')
     jmap = json.load(jfile)
     jfile.close()
-    print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+    row = ['BY', 'ON', 'WILL', 'UNWILL']
+    #print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
     print('\n')
+    print('\n')
+    print('num', end=' : \t')
+    print('TODO'.ljust(40), end='\t')
+    for r in row:
+        print(r, end='      \t')
+    print('')
+    print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+    print('')
     for i in jmap:
-        print(jmap[i]['todo'], end='  ')
-        print(jmap[i]['by'], end='  ')
-        print(jmap[i]['on'], end='  ')
-        print(jmap[i]['will'], end='  ')
-        print(jmap[i]['unwill'], end='  ')
+        print('  ', end='')
+        print(i, end=' : \t')
+        print(jmap[i]['todo'].ljust(40), end='\t')
+        print(jmap[i]['by'], end='      \t')
+        print(jmap[i]['on'], end='      \t')
+        print(jmap[i]['will'], end='        \t')
+        print(jmap[i]['unwill'], end='      \t\n')
         print('\n')
-    print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+    print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+    print('\n')
 
 while True:
     command = input().split()
+    if not command:
+        continue
     if command[0] == "add":
         add(command)
         print('done!!')
     elif command[0] == "see":
         see(command)
+    elif command[0] == 'erase':
+        pass
     elif command[0] == "exit":
         print('Bye!!')
         sys.exit()
