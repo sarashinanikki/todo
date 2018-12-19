@@ -4,13 +4,25 @@ from collections import OrderedDict
 import pprint
 
 path = '/home/sarashin/Documents/py/todo/todo.json'
+archive_path = '/home/sarashin/Documents/py/todo/todo_archive.json'
 try:
     with open(path, mode='x') as init:
         init.write('{}')
 except FileExistsError:
     pass
 
+try:
+    with open(archive_path, mode='x') as archive_init:
+        archive_init.write('{}')
+except FileExistsError:
+    pass
+
+error_messages = ['']
+
 def add(args):
+    if len(args) <= 1:
+        alart = 'TODOの件名は必須となります'
+        return alart
     jfile = open(path, 'r')
     jmap = json.load(jfile, object_pairs_hook=OrderedDict)
     jfile.close()
@@ -35,13 +47,14 @@ def add(args):
     jout = open(path, 'w')
     json.dump(jmap, jout, ensure_ascii=False)
     jout.close()
+    complete = 'done!!'
+    return complete
 
-def see(parameter_list):
+def see(args):
     jfile = open(path, 'r')
     jmap = json.load(jfile)
     jfile.close()
     row = ['BY', 'ON', 'WILL', 'UNWILL']
-    #print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
     print('\n')
     print('\n')
     print('num', end=' : \t')
@@ -62,18 +75,37 @@ def see(parameter_list):
         print('\n')
     print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
     print('\n')
+    print('\n')
+
+
+def erase(args):
+    if len(args) <= 1:
+        alart = 'eraseするリストの番号を入力してください'
+        return alart
+    jfile = open(path, 'r')
+    jmap = json.load(jfile, object_pairs_hook=OrderedDict)
+    jfile.close()
+    index = str(args[1])
+    archive = jmap.pop(index)
+
 
 while True:
+    print(' -> ', end=' ')
     command = input().split()
     if not command:
         continue
     if command[0] == "add":
-        add(command)
-        print('done!!')
+        message = add(command)
+        print('')
+        print(message+'\n')
     elif command[0] == "see":
         see(command)
     elif command[0] == 'erase':
-        pass
+        erase(command)
     elif command[0] == "exit":
         print('Bye!!')
         sys.exit()
+    else:
+        print('')
+        print(' 使用できるコマンドは "add", "see", "erase", "help" です. 詳細は"help"を叩いてください')
+        print('\n')
