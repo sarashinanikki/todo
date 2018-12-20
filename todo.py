@@ -148,6 +148,50 @@ def edit(args):
     complete = 'complete!!'
     return complete
 
+def dicsort(args):
+    if len(args) <= 1:
+        see(args)
+        alart = 'sortする項目を入力してください'
+        return alart
+    #TODOファイルを開く
+    todo_file = open(path, 'r')
+    todo_map = json.load(todo_file, object_pairs_hook=OrderedDict)
+    todo_file.close()
+
+    #keyが有効か確認
+    row = ['todo', 'by', 'on', 'will', 'unwill']
+    sure = False
+    keys = args[1]
+    for i in row:
+        if i == keys:
+            sure = True
+    if not sure:
+        alart = '有効なkeyを入力してください'
+        return alart
+
+    #sort
+    swap_map = {}
+    for i in todo_map:
+        swap_map[i] = todo_map[i][keys]
+
+    sorted_swap = sorted(swap_map.items(), key=lambda x: x[1])
+    print(sorted_swap)
+    new_todo_map = {}
+    count = 1
+    for i in sorted_swap:
+        stringkey = str(i[0])
+        new_todo_map[count] = todo_map[stringkey]
+        count+=1
+
+    #TODOファイルに書き込む
+    todo_out = open(path, 'w')
+
+    json.dump(new_todo_map, todo_out, ensure_ascii=False)
+    todo_out.close()
+    see('')
+    complete = 'complete!!'
+    return complete
+
 while True:
     print(' -> ', end=' ')
     command = input().split()
@@ -165,6 +209,10 @@ while True:
         print(message+'\n')
     elif command[0] == 'edit':
         message = edit(command)
+        print('')
+        print(message+'\n')
+    elif command[0] == 'sort':
+        message = dicsort(command)
         print('')
         print(message+'\n')
     elif command[0] == "exit":
