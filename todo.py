@@ -171,11 +171,22 @@ def dicsort(args):
 
     #sort
     swap_map = {}
-    for i in todo_map:
-        swap_map[i] = todo_map[i][keys]
+    int_none = '100000000000010'
+    str_none = 'zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz'
+    if keys == 'will' or keys == 'unwill':
+        for i in todo_map:
+            todo_value = todo_map[i][keys]
+            if todo_value == 'None':
+                todo_value = int_none
+            swap_map[i] = int(todo_value)
+    else:
+        for i in todo_map:
+            todo_value = todo_map[i][keys]
+            if todo_value == 'None':
+                todo_value = str_none
+            swap_map[i] = (todo_value)
 
     sorted_swap = sorted(swap_map.items(), key=lambda x: x[1])
-    print(sorted_swap)
     new_todo_map = {}
     count = 1
     for i in sorted_swap:
