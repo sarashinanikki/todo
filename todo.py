@@ -19,8 +19,6 @@ try:
 except FileExistsError:
     pass
 
-error_messages = ['']
-
 def add(args):
     if len(args) <= 1:
         alart = 'TODOの件名は必須となります'
@@ -29,22 +27,17 @@ def add(args):
     todo_map = json.load(todo_file, object_pairs_hook=OrderedDict)
     todo_file.close()
     index = len(todo_map)+1
+    row = ['by', 'on', 'will', 'unwill']
     todo_map[index] = {}
     todo_map[index]['todo'] = args[1]
-    todo_map[index]['by'] = 'None'
-    todo_map[index]['on'] = 'None'
-    todo_map[index]['will'] = 'None'
-    todo_map[index]['unwill'] = 'None'
+    for i in row:
+        todo_map[index][i] = 'None'
 
     for i in range(2, len(args)):
-        if args[i] == 'by':
-            todo_map[index]['by'] = args[i+1]
-        elif args[i] == 'on':
-            todo_map[index]['on'] = args[i+1]
-        elif args[i] == 'will':
-            todo_map[index]['will'] = args[i+1]
-        elif args[i] == 'unwill':
-            todo_map[index]['unwill'] = args[i+1]
+        for j in row:            
+            if args[i] == j:
+                todo_map[index][j] = args[i+1]
+                continue
 
     todo_out = open(path, 'w')
     json.dump(todo_map, todo_out, ensure_ascii=False)
